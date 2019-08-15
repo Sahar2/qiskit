@@ -1,16 +1,31 @@
-# Copyright 2018, IBM.
+# This code is part of Qiskit.
 #
-# This source code is licensed under the Apache License, Version 2.0 found in
-# the LICENSE.txt file in the root directory of this source tree.
+# (C) Copyright IBM 2018.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
 
-.PHONY: doc autodoc clean
+.PHONY: doc autodoc autodoc_qiskit autodoc_aqua autodoc_chemistry clean
 
-SITE_PACKAGES := $(shell pip show qiskit | grep Location | sed 's/Location: //')
+# Define the paths where the different packages are placed. If present in an
+# environment variable with the same name (ie. "PATH_QISKIT=/a/b/c make doc"),
+# the environment variable value will take precedence.
+PATH_QISKIT ?= $(shell pip show qiskit-terra | grep Location | sed 's/Location: //')
 
-autodoc:
-ifneq ($(SITE_PACKAGES), )
-	sphinx-apidoc --output docs/autodoc --separate --implicit-namespaces --module-first -d 16 \
-		$(SITE_PACKAGES)/qiskit
+autodoc_qiskit:
+ifneq ($(PATH_QISKIT), )
+	sphinx-apidoc --output docs/autodoc --separate --implicit-namespaces --private --module-first -d 16 \
+		$(PATH_QISKIT)/qiskit
+endif
+
+autodoc: autodoc_qiskit
+ifneq ($(PATH_TERRA), )
+	rm -f docs/autodoc/modules.rst
 endif
 
 doc: autodoc

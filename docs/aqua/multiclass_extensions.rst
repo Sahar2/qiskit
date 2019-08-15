@@ -1,26 +1,26 @@
 .. _multiclass-extensions:
 
-====================
-Multiclass Extension
-====================
+======================
+Multiclass Extensions
+======================
 
-Both the Support Vector Machine Quantum Kernel (QSVM Kernel) and Support Vector Machine Quantum
-Variational (QSVM Variational) algorithms, as well as the
+Both the Quantum Support Vector Machine (QSVM) and
+Variational Quantum Classifier (vqc) algorithms, as well as the
 Support Vector Machine Radial Basis Function Kernel (SVM RBF Kernel) classical algorithm
 integrated into Aqua for generation of reference values,
 come with built-in binary classifiers. Aqua includes
-the ``MulticlassExtension`` pluggable interface for QSVM Kernel and SVM RBF Kernel,
+the ``MulticlassExtension`` pluggable interface for QSVM and SVM RBF Kernel,
 allowing for various multiclass classification
 extension algorithms to be included.
 
 .. topic:: Extending the Multiclass Extension  Library
 
     Consistent with its unique  design, Aqua has a modular and
-    extensible architecture. Algorithms and their supporting objects, such as multiclass extensions for
-    SVM algorithms,
-    are pluggable modules in Aqua.
-    New multiclass extensions are typically installed in the ``qiskit_aqua/components/multiclass_extensions``
-    folder and derive from the ``MulticlassExtension`` class.
+    extensible architecture. Algorithms and their supporting objects,
+    such as multiclass extensions for SVM algorithms, are pluggable modules in Aqua.
+    New multiclass extensions are typically installed in the
+    ``qiskit/aqua/components/multiclass_extensions`` folder and derive from the
+    ``MulticlassExtension`` class.
     Aqua also allows for
     :ref:`aqua-dynamically-discovered-components`: new components can register themselves
     as Aqua extensions and be dynamically discovered at run time independent of their
@@ -50,13 +50,13 @@ highest  value  from  its  decision  function  is  selected  as  the
 winner and the corresponding class label is returned.
 
 In order to instantiate a ``OneAgainstRest`` object, you need to provide a ``FeatureMap`` and
-an ``Estimator`` object representing the binary classifier to be used.  The ``FeatureMap`` is required only
-for the QSVM Kernel algorithm -- not by the SVM RBF Kernel classical algorithm.
+an ``Estimator`` object representing the binary classifier to be used.  The ``FeatureMap`` is
+required only for the QSVM algorithm -- not by the SVM RBF Kernel classical algorithm.
 
 .. topic:: Declarative Name
 
-   When referring to the one-against-rest method declaratively inside Aqua, its code ``name``, by which Aqua
-   dynamically discovers and loads it, is ``OneAgainstRest``.
+   When referring to the one-against-rest method declaratively inside Aqua, its code ``name``, by
+   which Aqua dynamically discovers and loads it, is ``OneAgainstRest``.
 
 .. _all-pairs:
 
@@ -66,14 +66,14 @@ All Pairs
 
 In the *all-pairs* reduction, one trains :math:`k(k−1)/2` binary classifiers for a :math:`k`-way
 multiclass problem; each receives the samples of a pair of classes from the original training set,
-and must learn to distinguish these two classes. At prediction time, a *weighted voting scheme* is used:
-all :math:`k(k−1)/2` classifiers are applied to an unseen sample, and each class gets assigned the sum
-of all the scores obtained by the various classifiers.  The combined classifier
+and must learn to distinguish these two classes. At prediction time, a *weighted voting scheme* is
+used: all :math:`k(k−1)/2` classifiers are applied to an unseen sample, and each class gets
+assigned the sum of all the scores obtained by the various classifiers.  The combined classifier
 returns as a result the class getting the highest value.
 
 In order to instantiate an ``AllPairs`` object, you need to provide a ``FeatureMap`` and
-an ``Estimator`` object representing the binary classifier to be used.  The ``FeatureMap`` is required only
-for the QSVM Kernel algorithm -- not by the SVM RBF Kernel classical algorithm.
+an ``Estimator`` object representing the binary classifier to be used.  The ``FeatureMap`` is
+required only for the QSVM algorithm -- not by the SVM RBF Kernel classical algorithm.
 
 .. topic:: Declarative Name
 
@@ -112,13 +112,13 @@ for the first column, ECC builds a binary classifier to separate :math:`\{2, 3\}
 :math:`\{1\}`.  Thus, 6 binary classifiers are trained in this way.  To classify a
 new data point :math:`\mathbf{x}`, all 6 binary classifiers are evaluated to obtain a 6-bit string.
 Finally, we choose the class whose bitstring is closest to
-:math:`\mathbf{x}`’s output string as the predicted label.  Aqua's implementaion of ECC
+:math:`\mathbf{x}`’s output string as the predicted label.  Aqua's implementation of ECC
 uses the Euclidean distance.
 
 In order to instantiate an ``ErrorCorrectingCode`` object, you need to provide a ``FeatureMap``,
 an ``Estimator`` object representing the binary classifier to be used, and a ``code_size`` positive
 integer parameter representing the length of the bitstrings.  The ``FeatureMap`` is required only
-for the QSVM Kernel algorithm -- not by the SVM RBF Kernel classical algorithm.
+for the QSVM algorithm -- not by the SVM RBF Kernel classical algorithm.
 
 .. topic:: Declarative Name
 

@@ -1,5 +1,5 @@
 cache: pip
-sudo: false
+
 addons:
   apt:
     sources:
@@ -7,6 +7,7 @@ addons:
     packages:
       - gcc-4.8
       - g++-4.8
+
 matrix:
   fast_finish: true
   include:
@@ -16,11 +17,29 @@ matrix:
       env: TOXENV=py36
     - os: linux
       dist: xenial
-      python: 3.7
+      python: "3.7"
       env: TOXENV=py37
       sudo: true
     - python: "3.5"
       env: TOXENV=lint
+    - if: branch = master AND type = push
+      os: linux
+      dist: xenial
+      python: "3.7"
+      sudo: true
+      install:
+        - pip install qiskit
+        - pip install -r requirements-dev.txt
+      script: tools/deploy_documentation.sh
+    - if: tag IS present
+      python: "3.6"
+      env:
+        - TWINE_USERNAME=qiskit
+      install: pip install -U twine
+      script:
+        - python3 setup.py sdist
+        - twine upload dist/qiskit*tar.gz
+
 language: python
 install: pip install -U tox
 script:
